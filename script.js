@@ -16,7 +16,7 @@ left.addEventListener('click', () => {
     }
     else if (img_num === 0)
     {
-        food_info.innerText = "Swiss chocolate is a very well known swiss food with big companys like Toblerone expanding its popularity.";
+        food_info.innerText = "Swiss chocolate is a very well known swiss food with big companies like Toblerone expanding its popularity.";
     }
     else if (img_num === 2)
     {
@@ -33,7 +33,7 @@ right.addEventListener('click', () => {
     }
     else if (img_num === 0)
     {
-        food_info.innerText = "Swiss chocolate is a very well known swiss food with big companys like Toblerone expanding its popularity.";
+        food_info.innerText = "Swiss chocolate is a very well known swiss food with big companies like Toblerone expanding its popularity.";
     }
     else if (img_num === 2)
     {
@@ -47,7 +47,7 @@ if (img_num === 1)
 }
 else if (img_num === 0)
 {
-    food_info.innerText = "Swiss chocolate is a very well known swiss food with big companys like Toblerone expanding its popularity.";
+    food_info.innerText = "Swiss chocolate is a very well known swiss food with big companies like Toblerone expanding its popularity.";
 }
 else if (img_num === 2)
 {
