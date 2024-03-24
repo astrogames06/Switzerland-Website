@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/7d33d53aa9.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Game</title>
+</head>
+<body>
+    <div class="subpage-title">
+        <img src="swiss-flag-mountains.jpg" data-aos="fade-right">
+        <h1 data-aos="fade-up">Game</h1>
+    </div>
+
+    <h1 id="food-title">Chunky Cheese Game: Objective is to pull back the yellow ball like a slingshot and fling the balls to hit the red squares and knock them all over.</h1>
+    <div id="game"></div>
+    <BR>
+    <div id="home-btn-con">
+        <a class="home-btn" href="index.html">Home <i class="fa-solid fa-house"></i></a>
+    </div>
+
+    <script src="matter.min.js"></script>
+    <script>
+        let engine = Matter.Engine.create();
+
+        let render = Matter.Render.create({
+            element: document.getElementById('game'),
+            engine: engine,
+            options: {
+                width: 1400,
+                height: 650, 
+                wireframes: false
+            }
+        });
+
+        let ground = Matter.Bodies.rectangle(1200, 500, 300, 20, { isStatic: true }); 
+
+        let ball = Matter.Bodies.circle(300, 300, 20, {
+            render: {
+                fillStyle: 'yellow',
+                strokeStyle: 'black',
+                lineWidth: 1
+            }
+        });
+        let sling = Matter.Constraint.create({ 
+            pointA: { x: 300, y: 300 }, 
+            bodyB: ball, 
+            stiffness: 0.05
+        });
+
+        let mouse = Matter.Mouse.create(render.canvas);
+        let mouseConstraint = Matter.MouseConstraint.create(engine, {
+            mouse: mouse,
+            constraint: {
+                render: {visible: false}
+            }
+        });
+        render.mouse = mouse;
+
+        let firing = false;
+        Matter.Events.on(mouseConstraint,'enddrag', function(e) {
+            if(e.body === ball) firing = true;
+        });
+        Matter.Events.on(engine,'afterUpdate', function() {
+            if (firing && Math.abs(ball.position.x-300) < 20 && Math.abs(ball.position.y-300) < 20) {
+                ball = Matter.Bodies.circle(300, 300, 20, {
+                    render: {
+                        fillStyle: 'yellow',
+                        strokeStyle: 'black',
+                        lineWidth: 1
+                    }
+                });
+                Matter.World.add(engine.world, ball);
+                sling.bodyB = ball;
+                firing = false;
+            }
+        });
+
+        let stack = Matter.Composites.stack(1100, 270, 4, 4, 0, 0, function(x, y) { 
+            return Matter.Bodies.polygon(x, y, 8, 30, {
+                render: {
+                    fillStyle: 'red',
+                    strokeStyle: 'black',
+                    lineWidth: 1
+                }
+            });
+        });
+
+        Matter.World.add(engine.world, [stack, ground, ball, sling, mouseConstraint]);
+        Matter.Engine.run(engine);
+        Matter.Render.run(render);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
